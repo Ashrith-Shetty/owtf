@@ -20,7 +20,6 @@ from owtf.utils.timer import timer
 
 def plugin_output_exists(session, plugin_key, target_id):
     """Check if output exists
-
     :param plugin_key: plugin key
     :type plugin_key: `str`
     :param target_id: Target id
@@ -38,7 +37,6 @@ def plugin_output_exists(session, plugin_key, target_id):
 
 def plugin_count_output(session):
     """Get count stats
-
     :return: Count stats
     :rtype: `dict`
     """
@@ -53,7 +51,6 @@ def plugin_count_output(session):
 
 def poutput_gen_query(session, filter_data, target_id, for_delete=False):
     """Generate query
-
     :param filter_data: Filter criteria
     :type filter_data: `dict`
     :param target_id: target ID
@@ -94,7 +91,6 @@ def poutput_gen_query(session, filter_data, target_id, for_delete=False):
             ]
             query = query.filter(PluginOutput.plugin_code.in_(plugins))
             
-
     if filter_data.get("status", None):
         if isinstance(filter_data.get("status"), str):
             query = query.filter_by(status=filter_data["status"])
@@ -132,7 +128,6 @@ def poutput_gen_query(session, filter_data, target_id, for_delete=False):
 @target_required
 def get_all_poutputs(session, filter_data=None, target_id=None, inc_output=False):
     """Get all data based on criteria
-
     :param filter_data: Filter data
     :type filter_data: `dict`
     :param target_id: target ID
@@ -152,7 +147,6 @@ def get_all_poutputs(session, filter_data=None, target_id=None, inc_output=False
 @target_required
 def get_unique_dicts(session, target_id=None):
     """Returns a dict of some column names and their unique database, useful for advanced filter
-
     :param target_id: target ID
     :type target_id: `int`
     :return: Results
@@ -161,38 +155,33 @@ def get_unique_dicts(session, target_id=None):
     unique_data = {
         "plugin_type": [
             i[0]
-            for i in session.query(PluginOutput.plugin_type)
-            .filter_by(target_id=target_id)
-            .distinct()
-            .all()
+            for i in session.query(PluginOutput.plugin_type).filter_by(
+                target_id=target_id
+            ).distinct().all()
         ],
         "plugin_group": [
             i[0]
-            for i in session.query(PluginOutput.plugin_group)
-            .filter_by(target_id=target_id)
-            .distinct()
-            .all()
+            for i in session.query(PluginOutput.plugin_group).filter_by(
+                target_id=target_id
+            ).distinct().all()
         ],
         "status": [
             i[0]
-            for i in session.query(PluginOutput.status)
-            .filter_by(target_id=target_id)
-            .distinct()
-            .all()
+            for i in session.query(PluginOutput.status).filter_by(
+                target_id=target_id
+            ).distinct().all()
         ],
         "user_rank": [
             i[0]
-            for i in session.query(PluginOutput.user_rank)
-            .filter_by(target_id=target_id)
-            .distinct()
-            .all()
+            for i in session.query(PluginOutput.user_rank).filter_by(
+                target_id=target_id
+            ).distinct().all()
         ],
         "owtf_rank": [
             i[0]
-            for i in session.query(PluginOutput.owtf_rank)
-            .filter_by(target_id=target_id)
-            .distinct()
-            .all()
+            for i in session.query(PluginOutput.owtf_rank).filter_by(
+                target_id=target_id
+            ).distinct().all()
         ],
     }
     return unique_data
@@ -201,10 +190,8 @@ def get_unique_dicts(session, target_id=None):
 @target_required
 def delete_all_poutput(session, filter_data, target_id=None):
     """Delete all plugin output
-
     .. note::
         Here keeping filter_data optional is very risky
-
     :param filter_data: Filter data
     :type filter_data: `dict`
     :param target_id: target ID
@@ -231,7 +218,6 @@ def update_poutput(
     session, plugin_group, plugin_type, plugin_code, patch_data, target_id=None
 ):
     """Update output in DB
-
     :param plugin_group: Plugin group
     :type plugin_group: `str`
     :param plugin_type: Plugin type
@@ -271,7 +257,6 @@ def update_poutput(
 
 def plugin_already_run(session, plugin_info, target_id=None):
     """Check if plugin already ran
-
     :param plugin_info: Plugin info
     :type plugin_info: `dict`
     :param target_id: target ID
@@ -279,23 +264,18 @@ def plugin_already_run(session, plugin_info, target_id=None):
     :return: True if already ran
     :rtype: `bool`
     """
-    plugin_output_count = (
-        session.query(PluginOutput)
-        .filter_by(
-            target_id=target_id,
-            plugin_code=plugin_info["code"],
-            plugin_type=plugin_info["type"],
-            plugin_group=plugin_info["group"],
-        )
-        .count()
-    )
+    plugin_output_count = session.query(PluginOutput).filter_by(
+        target_id=target_id,
+        plugin_code=plugin_info["code"],
+        plugin_type=plugin_info["type"],
+        plugin_group=plugin_info["group"],
+    ).count()
     return plugin_output_count > 0  # This is nothing but a "None" returned
 
 
 @target_required
 def save_plugin_output(session, plugin, output, target_id=None):
     """Save into the database the command output of the plugin.
-
     :param session: `Session`
     :param plugin: Plugin
     :type plugin: `dict`
@@ -334,7 +314,6 @@ def save_plugin_output(session, plugin, output, target_id=None):
 @target_required
 def save_partial_output(session, plugin, output, message, target_id=None):
     """Save partial plugin output
-
     :param plugin: Plugin dict
     :type plugin: `dict`
     :param output: Output
@@ -375,7 +354,6 @@ def save_partial_output(session, plugin, output, message, target_id=None):
 @session_required
 def get_severity_freq(session, session_id=None):
     """Get severity frequencies for the analytics
-
     :param session_id: session ID
     :type session_id: `int`
     :return: Frequency data
@@ -391,9 +369,9 @@ def get_severity_freq(session, session_id=None):
     ]
 
     targets = []
-    target_objs = (
-        session.query(Target.id).filter(Target.sessions.any(id=session_id)).all()
-    )
+    target_objs = session.query(Target.id).filter(
+        Target.sessions.any(id=session_id)
+    ).all()
     for target_obj in target_objs:
         targets.append(target_obj.id)
 
