@@ -51,7 +51,7 @@ def starttls(
 
     # # Default Options
     options.setdefault("do_handshake_on_connect", False)
-    options.setdefault("ssl_version", ssl.PROTOCOL_TLS)
+    options.setdefault("ssl_version", ssl.PROTOCOL_SSLv23)
     options.setdefault("server_side", True)
 
     # The idea is to handle domains with greater than 3 dots using wildcard certs
@@ -118,12 +118,7 @@ def starttls(
     state = [io.ERROR]
     # Wrap the socket; swap out handlers.
     io.remove_handler(socket.fileno())
-    try:
-        wrapped = ssl.wrap_socket(socket, **options)
-    except TypeError:
-        # if python version less than 3.7
-        wrapped = ssl.SSLSocket(socket, **options)
-
+    wrapped = ssl.SSLSocket(socket, **options)
     wrapped.setblocking(0)
     io.add_handler(wrapped.fileno(), handshake, state[0])
     # Begin the handshake.
