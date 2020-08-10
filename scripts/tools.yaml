@@ -8,7 +8,7 @@ DNSpider:
   command: "wget --user-agent='Mozilla/5.0 (X11; Linux i686; rv:6.0) Gecko/20100101 Firefox/15.0' --tries=3 http://www.agarri.fr/docs/wordlists.tgz; wget --user-agent='Mozilla/5.0 (X11; Linux i686; rv:6.0) Gecko/20100101 Firefox/15.0' --tries=3 http://www.agarri.fr/docs/dnsspider-0.6.py; chmod +x dnsspider-0.6.py; tar zxvf wordlists.tgz; rm wordlists.tgz"
   directory: tools/restricted/dnspider
 Hoppy:
-  command: "wget --user-agent='Mozilla/5.0 (X11; Linux i686; rv:6.0) Gecko/20100101 Firefox/15.0' --tries=3 https://labs.portcullis.co.uk/download/hoppy-1.8.1.tar.bz2; bunzip2 *; tar xvf *; rm -f *.tar 2> /dev/null"
+  command: "wget --user-agent='Mozilla/5.0 (X11; Linux i686; rv:6.0) Gecko/20100101 Firefox/15.0' --tries=3 --no-check-certificate https://labs.portcullis.co.uk/download/hoppy-1.8.1.tar.bz2; bunzip2 *; tar xvf *; rm -f *.tar 2> /dev/null"
   directory: tools/restricted/hoppy-1.8.1
 Httprint:
   command: "wget --user-agent='Mozilla/5.0 (X11; Linux i686; rv:6.0) Gecko/20100101 Firefox/15.0' --tries=3 http://www.net-square.com/_assets/httprint_linux_301.zip; unzip *.zip; rm -f *.zip; cp -rf ~/.owtf/tools/httprint-signatures.txt ~/.owtf/tools/restricted/httprint/httprint_301/linux"
